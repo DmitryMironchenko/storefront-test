@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Breitling Frontend Engineer Technical Exercise
 
-## Getting Started
+Starter repository for the Breitling frontend technical test. Setup is done so you can focus on product listing, product detail, basket, analytics, and checkout.
 
-First, run the development server:
+The full brief is in [`docs/Breitling Frontend Engineer Technical Task.docx`](docs/Breitling%20Frontend%20Engineer%20Technical%20Task.docx).
+
+## Requirements (summary)
+
+Using the Algolia credentials below, create a Next.js storefront which:
+
+- Displays one or more PLPs, listing the available products. PLPs should have filters for selectable attributes.
+- PLP links with filters applied must be shareable with others.
+- Displays PDPs for each product, showing relevant product details.
+- Allows users to add products to a persistent basket, maintained in the browser between sessions.
+- Tracks common user events (viewing a product, adding to cart, etc.) with a sensible analytics payload. Console logging is fine.
+- Submits checkout to a mock endpoint when the user attempts a purchase, with a sensible payload.
+- Is accessible and works with a screen reader.
+
+You may use any tools you wish, including AI. Make defensible decisions and fully understand any generated code. Functionality matters more than visual polish.
+
+Submit via a public Git repository (GitHub or similar).
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # already populated with the exercise credentials
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The home page verifies the Algolia connection.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What's included
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Item | Location |
+| --- | --- |
+| Next.js 16 (App Router, TypeScript, Tailwind) | project root |
+| Algolia env vars | `.env.local` / `.env.example` |
+| Search client | `src/lib/algolia/client.ts` |
+| Product types (demo index shape) | `src/types/product.ts` |
+| Mock checkout API | `POST /api/checkout` → `src/app/api/checkout/route.ts` |
+| InstantSearch | `react-instantsearch` (pre-installed) |
 
-## Learn More
+## Algolia credentials
 
-To learn more about Next.js, take a look at the following resources:
+These are search-only keys for Algolia's public demo index:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Value |
+| --- | --- |
+| `NEXT_PUBLIC_ALGOLIA_APP_ID` | `latency` |
+| `NEXT_PUBLIC_ALGOLIA_API_KEY` | `af044fb0788d6bb15f807e4420592bc5` |
+| `NEXT_PUBLIC_ALGOLIA_INDEX_NAME` | `instant_search` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Example product fields: `name`, `description`, `brand`, `categories`, `hierarchicalCategories`, `price`, `image`, `rating`, `objectID`.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev      # development server
+npm run build    # production build
+npm run start    # production server
+npm run lint     # ESLint
+```
