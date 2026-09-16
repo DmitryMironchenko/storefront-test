@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code — commit shared agent skills (.agents/, .claude/skills, skills-lock.json)
+# so the team reuses them; ignore only personal, per-user local settings
+.claude/settings.local.json
