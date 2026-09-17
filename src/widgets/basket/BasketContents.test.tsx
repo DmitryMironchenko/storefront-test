@@ -77,10 +77,10 @@ describe("BasketContents", () => {
     expect(useBasketStore.getState().items).toEqual([echo]);
     expect(track).toHaveBeenCalledWith({
       name: "remove_from_cart",
-      payload: expect.objectContaining({
+      product: expect.objectContaining({
         objectID: "4397400",
-        quantity: 2,
       }),
+      quantity: 2,
     });
   });
 

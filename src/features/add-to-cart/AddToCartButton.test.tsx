@@ -54,13 +54,13 @@ describe("AddToCartButton", () => {
 
     expect(track).toHaveBeenCalledWith({
       name: "add_to_cart",
-      payload: expect.objectContaining({
+      product: expect.objectContaining({
         objectID: "4397400",
         name: "Google - Chromecast - Black",
         brand: "Google",
         price: 35,
-        quantity: 1,
       }),
+      quantity: 1,
     });
   });
 

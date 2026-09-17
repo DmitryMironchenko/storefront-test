@@ -26,7 +26,7 @@ export function ProductViewedTracker({ product }: Props) {
     trackedId.current = objectID;
     track({
       name: "product_viewed",
-      payload: { objectID, name, brand, price },
+      product: { objectID, name, brand, price },
     });
   }, [objectID, name, brand, price]);
 
