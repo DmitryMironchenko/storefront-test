@@ -1,0 +1,77 @@
+name: CI
+
+# The three-tier verification loop from ADR 0004, run as the merge gate:
+# static + unit as one fast job, Playwright E2E as a separate parallel job.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref (e.g. a force-push to a PR branch).
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Tier 1 (static) + tier 2 (unit/component). Fast inner loop; mirrors the
+  # `verify` script (prettier --check && eslint && tsc --noEmit && vitest run),
+  # but as discrete steps so each failure is annotated on its own.
+  verify:
+    name: Format · Lint · Typecheck · Unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit / component tests
+        run: npm test
+
+  # Tier 3 (E2E). Drives a real browser against the app (ADR 0004).
+  e2e:
+    name: E2E · Playwright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Public Algolia demo creds; next dev inlines these at build time. Not a
+      # secret (they ship in .env.example), so copy rather than plumb a secret.
+      - name: Provision env
+        run: cp .env.example .env
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
