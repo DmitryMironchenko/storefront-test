@@ -7,7 +7,7 @@
 // (server render) and swallow storage failures (private mode / blocked cookies)
 // rather than let analytics throw into a call site.
 
-export const ANONYMOUS_ID_KEY = "breitling-anonymous-id";
+export const ANONYMOUS_ID_KEY = 'breitling-anonymous-id';
 
 // Per-tab cache. Two jobs: it saves a localStorage read on every event, and —
 // crucially — it keeps the id stable for the page's lifetime even when the
@@ -38,7 +38,10 @@ function persist(id: string): void {
  *  pseudonymous analytics id, not a security token. */
 function mintId(): string {
   try {
-    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    if (
+      typeof crypto !== 'undefined' &&
+      typeof crypto.randomUUID === 'function'
+    ) {
       return crypto.randomUUID();
     }
   } catch {
@@ -54,7 +57,7 @@ function mintId(): string {
  * module state on the server is shared across requests.
  */
 export function getAnonymousId(): string {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return mintId();
   }
 

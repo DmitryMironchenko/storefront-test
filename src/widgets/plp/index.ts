@@ -1,2 +1,2 @@
 // Public API of the PLP widget.
-export { Plp } from "./Plp";
+export { Plp } from './Plp';

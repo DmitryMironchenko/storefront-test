@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useBasketStore } from "./store";
+import { useBasketStore } from './store';
 
 // Reads the persisted basket back into the store, once, after mount. The store
 // uses `skipHydration` so the first client render matches the server's empty

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Button } from "@heroui/react";
-import Image from "next/image";
+import { Button } from '@heroui/react';
+import Image from 'next/image';
 
-import { useBasketStore, type LineItem } from "@/entities/basket";
-import { formatPrice, isSupportedProductImage } from "@/entities/product";
-import { track } from "@/shared/analytics";
+import { useBasketStore, type LineItem } from '@/entities/basket';
+import { formatPrice, isSupportedProductImage } from '@/entities/product';
+import { track } from '@/shared/analytics';
 
 // One Basket row: the add-time snapshot (image, brand, name, indicative price),
 // a quantity stepper, and a remove control. Quantity nudges (`increment` /
@@ -21,7 +21,7 @@ export function BasketLineItem({ item }: { item: LineItem }) {
 
   const handleRemove = () => {
     track({
-      name: "remove_from_cart",
+      name: 'remove_from_cart',
       product: { objectID, name, brand, price },
       quantity,
     });
@@ -29,73 +29,73 @@ export function BasketLineItem({ item }: { item: LineItem }) {
   };
 
   return (
-    <li className="flex gap-4 py-4">
-      <div className="relative aspect-square h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-border bg-background">
+    <li className='flex gap-4 py-4'>
+      <div className='relative aspect-square h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-border bg-background'>
         {isSupportedProductImage(image) ? (
           <Image
             src={image}
             alt={name}
             fill
-            sizes="80px"
-            className="object-contain p-1"
+            sizes='80px'
+            className='object-contain p-1'
           />
         ) : (
           <div
-            aria-hidden="true"
-            className="flex h-full items-center justify-center text-xs text-muted"
+            aria-hidden='true'
+            className='flex h-full items-center justify-center text-xs text-muted'
           >
             No image
           </div>
         )}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className='flex min-w-0 flex-1 flex-col gap-1'>
         {brand ? (
-          <p className="text-xs font-medium uppercase tracking-wide text-muted">
+          <p className='text-xs font-medium tracking-wide text-muted uppercase'>
             {brand}
           </p>
         ) : null}
-        <p className="line-clamp-2 text-sm font-medium text-foreground">
+        <p className='line-clamp-2 text-sm font-medium text-foreground'>
           {name}
         </p>
-        <p className="text-sm text-muted">{formatPrice(price)}</p>
+        <p className='text-sm text-muted'>{formatPrice(price)}</p>
 
-        <div className="mt-2 flex items-center justify-between gap-2">
+        <div className='mt-2 flex items-center justify-between gap-2'>
           <div
-            className="inline-flex items-center rounded-lg border border-border"
-            role="group"
+            className='inline-flex items-center rounded-lg border border-border'
+            role='group'
             aria-label={`Quantity for ${name}`}
           >
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               isIconOnly
               isDisabled={quantity <= 1}
               onPress={() => decrement(objectID)}
               aria-label={`Decrease quantity of ${name}`}
             >
-              <span aria-hidden="true">−</span>
+              <span aria-hidden='true'>−</span>
             </Button>
             <span
-              className="min-w-8 text-center text-sm font-medium tabular-nums text-foreground"
-              aria-live="polite"
+              className='min-w-8 text-center text-sm font-medium text-foreground tabular-nums'
+              aria-live='polite'
             >
               {quantity}
             </span>
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               isIconOnly
               onPress={() => increment(objectID)}
               aria-label={`Increase quantity of ${name}`}
             >
-              <span aria-hidden="true">+</span>
+              <span aria-hidden='true'>+</span>
             </Button>
           </div>
 
           <Button
-            variant="ghost"
-            size="sm"
+            variant='ghost'
+            size='sm'
             onPress={handleRemove}
             aria-label={`Remove ${name} from basket`}
           >
@@ -104,7 +104,7 @@ export function BasketLineItem({ item }: { item: LineItem }) {
         </div>
       </div>
 
-      <p className="shrink-0 text-sm font-semibold text-foreground tabular-nums">
+      <p className='shrink-0 text-sm font-semibold text-foreground tabular-nums'>
         {formatPrice(price * quantity)}
       </p>
     </li>

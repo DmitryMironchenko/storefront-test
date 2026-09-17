@@ -8,9 +8,9 @@
 // The search key is a public, search-only key, so shipping it to the browser is
 // by design (ADR 0002). Config is read via static property access so Next inlines
 // the NEXT_PUBLIC_* values into the client bundle (see ./config.ts).
-import { liteClient } from "algoliasearch/lite";
+import { liteClient } from 'algoliasearch/lite';
 
-import { algoliaConfig, assertAlgoliaConfig } from "./config";
+import { algoliaConfig, assertAlgoliaConfig } from './config';
 
 let client: ReturnType<typeof liteClient> | undefined;
 

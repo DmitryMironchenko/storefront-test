@@ -18,4 +18,4 @@ export type LineItem = {
 
 // The identity + display fields captured when adding a Product, before the
 // Basket assigns a quantity. `add(snapshot)` turns this into a LineItem.
-export type LineItemSnapshot = Omit<LineItem, "quantity">;
+export type LineItemSnapshot = Omit<LineItem, 'quantity'>;

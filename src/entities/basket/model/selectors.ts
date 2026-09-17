@@ -1,5 +1,5 @@
-import { useBasketStore } from "./store";
-import type { LineItem } from "./line-item";
+import { useBasketStore } from './store';
+import type { LineItem } from './line-item';
 
 // Derived reads over the basket. Each is a hook selecting from the store, so a
 // component re-renders only when the slice it reads changes. Kept beside the

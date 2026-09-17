@@ -11,9 +11,10 @@
 // Validation is a *function*, not a module-level throw: an inlined top-level
 // throw would crash the entire client React tree on load if the env were missing
 // at build time. Callers assert right before they build a client instead.
-const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? "";
-const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? "";
-const indexName = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? "instant_search";
+const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '';
+const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? '';
+const indexName =
+  process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'instant_search';
 
 export const algoliaConfig = {
   appId,
@@ -25,8 +26,8 @@ export const algoliaConfig = {
 export function assertAlgoliaConfig(): void {
   if (!algoliaConfig.appId || !algoliaConfig.apiKey) {
     throw new Error(
-      "Missing Algolia env vars: set NEXT_PUBLIC_ALGOLIA_APP_ID and " +
-        "NEXT_PUBLIC_ALGOLIA_API_KEY in .env.local (see .env.example).",
+      'Missing Algolia env vars: set NEXT_PUBLIC_ALGOLIA_APP_ID and ' +
+        'NEXT_PUBLIC_ALGOLIA_API_KEY in .env.local (see .env.example).',
     );
   }
 }

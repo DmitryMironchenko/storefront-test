@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@heroui/react";
-import { Component, type ReactNode } from "react";
+import { Button } from '@heroui/react';
+import { Component, type ReactNode } from 'react';
 
 // Defence-in-depth around the search subtree (issue #3). Query failures are
 // handled inline via `useInstantSearch().status === "error"`; this boundary
@@ -20,7 +20,7 @@ export class SearchErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: unknown) {
-    console.error("[plp] search subtree crashed", error);
+    console.error('[plp] search subtree crashed', error);
   }
 
   private reset = () => this.setState({ hasError: false });
@@ -30,16 +30,16 @@ export class SearchErrorBoundary extends Component<Props, State> {
 
     return (
       <div
-        role="alert"
-        className="rounded-xl border border-border bg-surface p-6 text-surface-foreground"
+        role='alert'
+        className='rounded-xl border border-border bg-surface p-6 text-surface-foreground'
       >
-        <h2 className="text-base font-semibold text-foreground">
+        <h2 className='text-base font-semibold text-foreground'>
           Something went wrong with search
         </h2>
-        <p className="mt-1 text-sm text-muted">
+        <p className='mt-1 text-sm text-muted'>
           The product list failed to render. You can try again.
         </p>
-        <Button className="mt-4" variant="primary" onPress={this.reset}>
+        <Button className='mt-4' variant='primary' onPress={this.reset}>
           Try again
         </Button>
       </div>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 // The "← Back to products" link back to the PLP. Extracted because the PDP,
 // its not-found page, and its error boundary all need the identical accent-link
@@ -8,12 +8,12 @@ import Link from "next/link";
 export function BackToProductsLink({ className }: { className?: string }) {
   return (
     <Link
-      href="/"
+      href='/'
       className={`inline-flex items-center gap-1 text-sm text-accent-text underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent${
-        className ? ` ${className}` : ""
+        className ? ` ${className}` : ''
       }`}
     >
-      <span aria-hidden="true">←</span> Back to products
+      <span aria-hidden='true'>←</span> Back to products
     </Link>
   );
 }

@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { cache } from "react";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 // Imported from the api path directly, not the entity barrel: `getProduct` is
 // `server-only`, and the barrel is also imported by client components (e.g.
 // ProductCard), so re-exporting it there would poison the client bundle.
-import { getProduct } from "@/entities/product/api/getProduct";
-import { PdpPage } from "@/views/pdp-page";
+import { getProduct } from '@/entities/product/api/getProduct';
+import { PdpPage } from '@/views/pdp-page';
 
 // `/product/[objectID]` — the PDP route (a thin server shell over the view,
 // ADR 0003). Async Server Component: it fetches the Product on the server so a
@@ -26,7 +26,7 @@ export async function generateMetadata({
 }: PdpRouteProps): Promise<Metadata> {
   const { objectID } = await params;
   const product = await loadProduct(objectID);
-  if (!product) return { title: "Product not found" };
+  if (!product) return { title: 'Product not found' };
   return {
     title: product.name,
     description: product.description,

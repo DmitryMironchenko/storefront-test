@@ -1,17 +1,17 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import {
   createJSONStorage,
   persist,
   type StateStorage,
-} from "zustand/middleware";
+} from 'zustand/middleware';
 
-import type { LineItem, LineItemSnapshot } from "./line-item";
+import type { LineItem, LineItemSnapshot } from './line-item';
 
-export type { LineItem, LineItemSnapshot } from "./line-item";
+export type { LineItem, LineItemSnapshot } from './line-item';
 
 // One key, shared by every tab, so a basket written in one tab is the basket
 // read in another (the cross-tab sync below listens for writes to it).
-export const BASKET_STORAGE_KEY = "breitling-basket";
+export const BASKET_STORAGE_KEY = 'breitling-basket';
 const STORAGE_VERSION = 1;
 
 type BasketState = {
@@ -43,8 +43,8 @@ const noopStorage: StateStorage = {
   removeItem: () => {},
 };
 
-const storage = createJSONStorage<Pick<BasketState, "items">>(() =>
-  typeof window !== "undefined" ? window.localStorage : noopStorage,
+const storage = createJSONStorage<Pick<BasketState, 'items'>>(() =>
+  typeof window !== 'undefined' ? window.localStorage : noopStorage,
 );
 
 export const useBasketStore = create<BasketState>()(
@@ -123,8 +123,8 @@ export const useBasketStore = create<BasketState>()(
 // Cross-tab sync: `persist` writes to localStorage but does not listen for other
 // tabs' writes. When another tab changes the shared key, re-read it so this
 // tab's basket stays in step. Registered once, on the client only.
-if (typeof window !== "undefined") {
-  window.addEventListener("storage", (event) => {
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
     if (event.key === BASKET_STORAGE_KEY) {
       void useBasketStore.persist.rehydrate();
     }

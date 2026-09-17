@@ -1,0 +1,28 @@
+# Prettier is scoped to app code (src/), e2e/, and root-level config files.
+# Everything below is intentionally left untouched.
+
+# Dependencies & build output
+node_modules/
+.next/
+out/
+build/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+
+# Lockfiles / generated
+package-lock.json
+skills-lock.json
+
+# Tooling, editor & agent config (hand-written, not app code)
+.agents/
+.claude/
+.vscode/
+
+# Docs, prose & static assets — not formatter territory
+docs/
+public/
+types/
+*.md
