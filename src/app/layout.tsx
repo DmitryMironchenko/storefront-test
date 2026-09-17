@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { Header } from "@/widgets/header";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,6 +39,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <script dangerouslySetInnerHTML={{ __html: themeBridge }} />
+        <Header />
         {children}
       </body>
     </html>
