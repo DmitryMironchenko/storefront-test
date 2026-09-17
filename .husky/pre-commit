@@ -1,0 +1,4 @@
+# Fast inner loop (ADR 0004): lint + typecheck + unit/component tests.
+# E2E is intentionally NOT here — it boots a dev server and hits the network;
+# it runs on pre-push instead. Keep commits fast.
+npm run verify

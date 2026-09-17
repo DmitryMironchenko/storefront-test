@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "verify": "eslint && tsc --noEmit && vitest run"
+    "verify": "eslint && tsc --noEmit && vitest run",
+    "prepare": "husky"
   },
   "dependencies": {
     "@heroui/react": "^3.2.5",
@@ -41,6 +42,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "husky": "^9.1.7",
     "jsdom": "^30.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
