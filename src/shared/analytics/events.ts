@@ -23,20 +23,20 @@ export type ProductRef = {
 type Event<Name extends string, Data> = { name: Name } & Data;
 
 export type AnalyticsEvent =
-  | Event<"product_viewed", { product: ProductRef }>
-  | Event<"add_to_cart", { product: ProductRef; quantity: number }>
-  | Event<"remove_from_cart", { product: ProductRef; quantity: number }>
+  | Event<'product_viewed', { product: ProductRef }>
+  | Event<'add_to_cart', { product: ProductRef; quantity: number }>
+  | Event<'remove_from_cart', { product: ProductRef; quantity: number }>
   | Event<
-      "checkout_started",
+      'checkout_started',
       { currency: string; itemCount: number; subtotal: number }
     >
   | Event<
-      "checkout_completed",
+      'checkout_completed',
       { orderId: string; currency: string; itemCount: number; total: number }
     >;
 
 /** The event name literals, useful for narrowing/typing at the boundaries. */
-export type AnalyticsEventName = AnalyticsEvent["name"];
+export type AnalyticsEventName = AnalyticsEvent['name'];
 
 /** What actually leaves the app: the event plus the enrichment `track()` adds.
  *  This is the shape a sink receives. */

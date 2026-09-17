@@ -5,12 +5,12 @@
 //
 // `server-only`: this pulls the full server Algolia client, so importing it from
 // a client component is a build error — the fetch never runs in the browser.
-import "server-only";
+import 'server-only';
 
-import { getSearchClient } from "@/shared/api/algolia/client";
-import { algoliaConfig } from "@/shared/api/algolia/config";
+import { getSearchClient } from '@/shared/api/algolia/client';
+import { algoliaConfig } from '@/shared/api/algolia/config';
 
-import type { ProductHit } from "../model/product";
+import type { ProductHit } from '../model/product';
 
 /**
  * Fetch one Product by its `objectID`.
@@ -38,9 +38,9 @@ export async function getProduct(objectID: string): Promise<ProductHit | null> {
 // which client-common copy constructed the error.
 function isRecordNotFound(error: unknown): boolean {
   return (
-    typeof error === "object" &&
+    typeof error === 'object' &&
     error !== null &&
-    "status" in error &&
+    'status' in error &&
     (error as { status?: unknown }).status === 404
   );
 }

@@ -8,10 +8,10 @@
 // vendor SDK, a buffer, or a test spy is `setAnalyticsSink(fn)` and touches no
 // call site (acceptance: sink is swappable behind track()).
 
-import { getAnonymousId } from "./anonymous-id";
-import type { AnalyticsEvent, TrackedEvent } from "./events";
+import { getAnonymousId } from './anonymous-id';
+import type { AnalyticsEvent, TrackedEvent } from './events';
 
-export type { AnalyticsEvent, TrackedEvent, ProductRef } from "./events";
+export type { AnalyticsEvent, TrackedEvent, ProductRef } from './events';
 
 /** Where enriched events go. A vendor adapter would implement this. */
 export type AnalyticsSink = (event: TrackedEvent) => void;
@@ -19,7 +19,7 @@ export type AnalyticsSink = (event: TrackedEvent) => void;
 // The sanctioned sink for this exercise. Logs the name for scanability and the
 // full enriched payload for inspection.
 const consoleSink: AnalyticsSink = (event) => {
-  console.log("[analytics]", event.name, event);
+  console.log('[analytics]', event.name, event);
 };
 
 let sink: AnalyticsSink = consoleSink;
@@ -56,6 +56,6 @@ export function track(event: AnalyticsEvent): void {
     };
     sink(enriched);
   } catch (error) {
-    console.error("[analytics] track failed", error);
+    console.error('[analytics] track failed', error);
   }
 }

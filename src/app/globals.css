@@ -1,8 +1,8 @@
 /* Tailwind CSS v4 — must be imported first. */
-@import "tailwindcss";
+@import 'tailwindcss';
 /* HeroUI v3 styles — must come after Tailwind. Owns the design tokens
    (--background, --foreground, --accent, …) for both light and dark themes. */
-@import "@heroui/styles";
+@import '@heroui/styles';
 
 /* Expose HeroUI's live theme tokens as Tailwind colour utilities so app-level
    markup (bg-background / text-foreground) tracks the active theme instead of
@@ -27,7 +27,11 @@
      4.5:1. Blend toward foreground for links / "show more" / the selected facet;
      theme-aware, because it re-mixes when the referenced tokens flip under
      [data-theme="dark"]. Used via the `text-accent-text` utility. */
-  --color-accent-text: color-mix(in oklab, var(--accent) 58%, var(--foreground));
+  --color-accent-text: color-mix(
+    in oklab,
+    var(--accent) 58%,
+    var(--foreground)
+  );
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

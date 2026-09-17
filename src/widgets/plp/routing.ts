@@ -20,16 +20,16 @@
 // │   4. add a case to the round-trip test in `routing.test.ts`.              │
 // │ The round-trip invariant is `ui === routeToState(stateToRoute(ui))`.      │
 // └──────────────────────────────────────────────────────────────────────────┘
-import type { StateMapping, UiState } from "instantsearch.js";
+import type { StateMapping, UiState } from 'instantsearch.js';
 
-import { algoliaConfig } from "@/shared/api/algolia/config";
+import { algoliaConfig } from '@/shared/api/algolia/config';
 
 /** The base (relevance) index; price sorts are its replicas. */
 export const PLP_INDEX_NAME = algoliaConfig.indexName;
 
 /** Top level of `hierarchicalCategories` — the primary browse facet (CONTEXT.md). */
-const CATEGORY_ATTRIBUTE = "hierarchicalCategories.lvl0";
-const BRAND_ATTRIBUTE = "brand";
+const CATEGORY_ATTRIBUTE = 'hierarchicalCategories.lvl0';
+const BRAND_ATTRIBUTE = 'brand';
 
 export type SortItem = { value: string; label: string };
 
@@ -38,17 +38,17 @@ export type SortItem = { value: string; label: string };
  * name; relevance is the base index and stays first (its default).
  */
 export const SORT_ITEMS: SortItem[] = [
-  { value: PLP_INDEX_NAME, label: "Relevance" },
-  { value: `${PLP_INDEX_NAME}_price_asc`, label: "Price: low to high" },
-  { value: `${PLP_INDEX_NAME}_price_desc`, label: "Price: high to low" },
+  { value: PLP_INDEX_NAME, label: 'Relevance' },
+  { value: `${PLP_INDEX_NAME}_price_asc`, label: 'Price: low to high' },
+  { value: `${PLP_INDEX_NAME}_price_desc`, label: 'Price: high to low' },
 ];
 
 // Short URL tokens for the sort replicas — the raw replica index names would
 // leak Algolia internals into shareable links. Relevance (the base index) has no
 // token: it is the default, so it is simply absent from the URL.
 const SORT_VALUE_TO_TOKEN: Record<string, string> = {
-  [`${PLP_INDEX_NAME}_price_asc`]: "price_asc",
-  [`${PLP_INDEX_NAME}_price_desc`]: "price_desc",
+  [`${PLP_INDEX_NAME}_price_asc`]: 'price_asc',
+  [`${PLP_INDEX_NAME}_price_desc`]: 'price_desc',
 };
 const SORT_TOKEN_TO_VALUE: Record<string, string> = {
   price_asc: `${PLP_INDEX_NAME}_price_asc`,

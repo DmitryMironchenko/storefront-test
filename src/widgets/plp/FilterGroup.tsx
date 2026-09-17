@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 // A11y wrapper for a group of related filter controls. InstantSearch's
 // refinement widgets render bare checkbox lists with no grouping semantics; a
@@ -12,8 +12,8 @@ export function FilterGroup({
   children: ReactNode;
 }) {
   return (
-    <fieldset className="border-t border-border pt-4">
-      <legend className="mb-2 px-0 pr-2 text-sm font-semibold text-foreground">
+    <fieldset className='border-t border-border pt-4'>
+      <legend className='mb-2 px-0 pr-2 text-sm font-semibold text-foreground'>
         {legend}
       </legend>
       {children}

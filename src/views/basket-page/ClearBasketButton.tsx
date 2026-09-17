@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 
 import {
   useBasketCount,
   useBasketHasHydrated,
   useBasketStore,
-} from "@/entities/basket";
+} from '@/entities/basket';
 
 // "Clear basket" action for the basket page. Rendered as a leaf Client Component
 // so the surrounding BasketPage view stays a server shell. Hidden until the
@@ -20,7 +20,7 @@ export function ClearBasketButton() {
   if (!hasHydrated || count === 0) return null;
 
   return (
-    <Button variant="ghost" size="sm" onPress={() => clear()}>
+    <Button variant='ghost' size='sm' onPress={() => clear()}>
       Clear basket
     </Button>
   );
