@@ -5,6 +5,7 @@ import {
   isSupportedProductImage,
   type ProductHit,
 } from "@/entities/product";
+import { AddToCartButton } from "@/features/add-to-cart";
 
 // Product detail view. Presentational and hook-free, so it server-renders into
 // the initial HTML (the acceptance criterion: a direct load / shared link
@@ -61,6 +62,10 @@ export function Pdp({ product }: { product: ProductHit }) {
             {formatPrice(price)}
           </p>
         ) : null}
+
+        <div className="mt-2">
+          <AddToCartButton product={product} />
+        </div>
 
         {description ? (
           <p className="text-foreground">{description}</p>
