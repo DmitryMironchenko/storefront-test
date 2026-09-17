@@ -48,6 +48,51 @@ test("filters the catalogue and keeps the filter in a shareable, refresh-safe UR
   ).toBeVisible();
 });
 
+test("searches the catalogue and keeps the query in a shareable URL", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const status = page.getByRole("status");
+  await expect(status).toContainText(/product/);
+  const totalCount = await status.textContent();
+
+  // "apple" is only a broad, stable search term; the assertions don't depend on
+  // how many results it returns, just that it narrows and lands in the URL.
+  await page.getByRole("searchbox", { name: "Search" }).fill("apple");
+
+  await expect(page).toHaveURL(/[?&]q=apple/);
+  await expect(status).not.toHaveText(totalCount ?? "");
+  await expect(page.locator('a[href^="/product/"]').first()).toBeVisible();
+
+  // The query survives a full reload (shareable / refresh-safe).
+  await page.reload();
+  await expect(page.getByRole("searchbox", { name: "Search" })).toHaveValue(
+    "apple",
+  );
+});
+
+test("pages through results and keeps the page in the URL", async ({ page }) => {
+  await page.goto("/");
+
+  const firstProduct = page.locator('a[href^="/product/"]').first();
+  await expect(firstProduct).toBeVisible();
+  const firstHrefPage1 = await firstProduct.getAttribute("href");
+
+  // Guarded on a second page existing so an index change can't hard-fail this;
+  // the full catalogue always has many pages, so it runs.
+  const page2Link = page
+    .getByRole("navigation", { name: "Pagination" })
+    .getByRole("link", { name: "Page 2" });
+  await expect(page2Link).toBeVisible();
+
+  await page2Link.click();
+  await expect(page).toHaveURL(/[?&]page=2/);
+  await expect
+    .poll(() => firstProduct.getAttribute("href"))
+    .not.toBe(firstHrefPage1);
+});
+
 test("the PLP has no a11y violations", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Products" })).toBeVisible();
