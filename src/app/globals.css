@@ -11,11 +11,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
+  /* Secondary text token. HeroUI's raw `--muted` is tuned for its white
+     `--surface` and dips just under WCAG AA (4.43:1) on the greyer
+     `--background`. Derive our text-muted from foreground↔background instead so
+     it clears AA on both surfaces and stays theme-aware (it re-mixes under
+     [data-theme="dark"] because the referenced tokens do). */
+  --color-muted: color-mix(in oklab, var(--foreground) 62%, var(--background));
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
   --color-border: var(--border);
+  /* The vivid brand accent — used for borders, focus outlines and fills, where
+     the 3:1 non-text contrast threshold applies (3.37:1 clears it). */
   --color-accent: var(--accent);
+  /* Accent *as text* only reaches 3.37:1 on the light background, under AA's
+     4.5:1. Blend toward foreground for links / "show more" / the selected facet;
+     theme-aware, because it re-mixes when the referenced tokens flip under
+     [data-theme="dark"]. Used via the `text-accent-text` utility. */
+  --color-accent-text: color-mix(in oklab, var(--accent) 58%, var(--foreground));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
