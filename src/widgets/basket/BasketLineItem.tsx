@@ -22,7 +22,8 @@ export function BasketLineItem({ item }: { item: LineItem }) {
   const handleRemove = () => {
     track({
       name: "remove_from_cart",
-      payload: { objectID, name, brand, price, quantity },
+      product: { objectID, name, brand, price },
+      quantity,
     });
     remove(objectID);
   };

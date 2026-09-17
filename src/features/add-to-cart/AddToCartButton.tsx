@@ -28,7 +28,8 @@ export function AddToCartButton({ product }: Props) {
     add(snapshot);
     track({
       name: "add_to_cart",
-      payload: { objectID, name, brand, price, quantity: 1 },
+      product: { objectID, name, brand, price },
+      quantity: 1,
     });
   };
 

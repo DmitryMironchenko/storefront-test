@@ -25,7 +25,7 @@ describe("ProductViewedTracker", () => {
     expect(track).toHaveBeenCalledTimes(1);
     expect(track).toHaveBeenCalledWith({
       name: "product_viewed",
-      payload: expect.objectContaining({
+      product: expect.objectContaining({
         objectID: "4397400",
         name: "Google - Chromecast - Black",
         brand: "Google",
