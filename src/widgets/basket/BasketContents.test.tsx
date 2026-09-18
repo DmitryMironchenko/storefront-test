@@ -1,5 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'vitest-axe';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { track } = vi.hoisted(() => ({ track: vi.fn() }));
@@ -59,6 +60,21 @@ describe('BasketContents', () => {
     expect(screen.getByText('Google - Chromecast - Black')).toBeInTheDocument();
     expect(screen.getByText('Amazon - Echo - Charcoal')).toBeInTheDocument();
     expect(screen.getByText('$170.00')).toBeInTheDocument();
+  });
+
+  // Step 7 (ADR 0013): axe over the populated basket — the list, quantity
+  // steppers and remove controls — where labelled icon buttons and list
+  // semantics are easy to regress. Rendered in a <main> landmark so the scan
+  // reflects how the drawer/page mounts it.
+  it('has no axe violations when populated', async () => {
+    setBasket([chromecast, echo]);
+    const { container } = render(
+      <main>
+        <BasketContents />
+      </main>,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it('removes a line and fires remove_from_cart', async () => {
