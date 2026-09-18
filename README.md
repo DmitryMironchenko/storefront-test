@@ -2,6 +2,8 @@
 
 Starter repository for the Breitling frontend technical test. Setup is done so you can focus on product listing, product detail, basket, analytics, and checkout.
 
+**Live demo:** https://storefront-test-peach-iota.vercel.app
+
 The full brief is in [`docs/Breitling Frontend Engineer Technical Task.docx`](docs/Breitling%20Frontend%20Engineer%20Technical%20Task.docx).
 
 ## Requirements (summary)
@@ -36,8 +38,8 @@ Open [http://localhost:3000](http://localhost:3000). The home page verifies the 
 | --- | --- |
 | Next.js 16 (App Router, TypeScript, Tailwind) | project root |
 | Algolia env vars | `.env.local` / `.env.example` |
-| Search client | `src/lib/algolia/client.ts` |
-| Product types (demo index shape) | `src/types/product.ts` |
+| Search client | `src/shared/api/algolia/` |
+| Product types (demo index shape) | `src/entities/product/model/product.ts` |
 | Mock checkout API | `POST /api/checkout` → `src/app/api/checkout/route.ts` |
 | InstantSearch | `react-instantsearch` (pre-installed) |
 
