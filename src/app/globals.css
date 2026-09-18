@@ -35,3 +35,18 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+/* HeroUI's primary button puts white text (--accent-foreground) on the vivid
+   --accent fill, which is only 3.58:1 — fine for a non-text fill (3:1) but under
+   AA's 4.5:1 for the button *label*. Same rationale as --color-accent-text
+   above (ADR 0007): keep the vivid brand accent for borders/outlines, but darken
+   the primary button's fill so its label clears AA. HeroUI's own --accent-hover
+   mixes toward white (lighter, worse contrast), so base/hover/pressed are all
+   pinned to darker, AA-clearing shades. Derived from --accent, so it stays
+   theme-aware and on-brand. Unlayered, so it wins over HeroUI's @layer
+   components rule. Fixes every primary CTA (Checkout, Add to basket). */
+.button--primary {
+  --button-bg: color-mix(in oklab, var(--accent) 85%, black);
+  --button-bg-hover: color-mix(in oklab, var(--accent) 78%, black);
+  --button-bg-pressed: color-mix(in oklab, var(--accent) 72%, black);
+}
