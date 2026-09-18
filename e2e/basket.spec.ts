@@ -1,5 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+
+import { expectNoA11yViolations } from './a11y';
 
 // Basket E2E (ADR 0004): the persistence and cross-tab behaviour (issue #5
 // acceptance) that jsdom can't prove — a real reload and a real cross-document
@@ -84,6 +85,37 @@ test("reflects another tab's basket update without a reload", async ({
   await tabB.close();
 });
 
+test('the basket drawer traps and restores focus (React Aria overlay)', async ({
+  page,
+}) => {
+  // Step 7 (ADR 0013): the drawer is a HeroUI/React Aria overlay; a screen-reader
+  // / keyboard user relies on it moving focus into the dialog on open and
+  // returning it to the trigger on close. Exercised end-to-end because jsdom
+  // can't prove real focus management.
+  await page.goto('/');
+
+  const trigger = page.locator('header').getByRole('button', {
+    name: /basket/i,
+  });
+  await trigger.click();
+
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByRole('heading', { name: 'Your basket' }),
+  ).toBeVisible();
+
+  // Focus has moved into the dialog (focus trap).
+  await expect
+    .poll(() => dialog.evaluate((el) => el.contains(document.activeElement)))
+    .toBe(true);
+
+  // Escape closes the overlay and focus returns to the trigger.
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
 test('the basket page has no a11y violations', async ({ page }) => {
   await page.goto('/basket');
   await seedBasket(page, [chromecast, echo]);
@@ -95,6 +127,5 @@ test('the basket page has no a11y violations', async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText('Google - Chromecast - Black')).toBeVisible();
 
-  const { violations } = await new AxeBuilder({ page }).analyze();
-  expect(violations).toEqual([]);
+  await expectNoA11yViolations(page);
 });
