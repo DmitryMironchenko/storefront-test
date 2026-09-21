@@ -7,6 +7,7 @@ import {
 } from 'react-instantsearch';
 
 import { FilterGroup } from './FilterGroup';
+import { PriceRange } from './PriceRange';
 
 // react-instantsearch widgets ship no CSS (BYO). These class maps style them
 // with the same Tailwind/HeroUI tokens as the rest of the app (ADR 0003), so
@@ -79,6 +80,10 @@ export function FilterPanel() {
           showMoreLimit={20}
           classNames={refinementListClassNames}
         />
+      </FilterGroup>
+
+      <FilterGroup legend='Price'>
+        <PriceRange />
       </FilterGroup>
     </div>
   );
