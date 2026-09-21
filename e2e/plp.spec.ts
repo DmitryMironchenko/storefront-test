@@ -51,6 +51,34 @@ test('filters the catalogue and keeps the filter in a shareable, refresh-safe UR
   ).toBeVisible();
 });
 
+test('narrows by a price range and keeps it in a shareable, refresh-safe URL', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const status = page.getByRole('status');
+  await expect(status).toContainText(/product/);
+  const totalCount = await status.textContent();
+
+  // Apply a lower bound from the labelled "Price" fieldset and submit it.
+  const priceGroup = page.getByRole('group', { name: 'Price' });
+  await priceGroup.getByLabel(/min/i).fill('100');
+  await priceGroup.getByRole('button', { name: /apply/i }).click();
+
+  // The bound lands in the URL as the flat `price` token and narrows the count.
+  await expect(page).toHaveURL(/price=100/);
+  await expect(status).not.toHaveText(totalCount ?? '');
+  const filteredCount = await status.textContent();
+  const sharedUrl = page.url();
+
+  // The range survives a full reload, restored into the field from the URL.
+  await page.goto(sharedUrl);
+  await expect(page.getByRole('status')).toHaveText(filteredCount ?? '');
+  await expect(
+    page.getByRole('group', { name: 'Price' }).getByLabel(/min/i),
+  ).toHaveValue('100');
+});
+
 test('exposes the three named a11y affordances: facet grouping, live region, aria-current', async ({
   page,
 }) => {
@@ -62,6 +90,7 @@ test('exposes the three named a11y affordances: facet grouping, live region, ari
   // fieldset/legend: each facet exposes an accessible group named by its legend.
   await expect(page.getByRole('group', { name: 'Category' })).toBeVisible();
   await expect(page.getByRole('group', { name: 'Brand' })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Price' })).toBeVisible();
 
   // <SearchStats> is a role="status" (implicit aria-live="polite") live region.
   const status = page.getByRole('status');

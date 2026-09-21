@@ -26,6 +26,7 @@ describe('plp routing / stateMapping', () => {
         query: 'watch',
         hierarchicalMenu: { 'hierarchicalCategories.lvl0': ['Audio'] },
         refinementList: { brand: ['Apple', 'Sony'] },
+        range: { price: '100:500' },
         sortBy: `${INDEX}_price_asc`,
         page: 3,
       },
@@ -35,6 +36,7 @@ describe('plp routing / stateMapping', () => {
       q: 'watch',
       category: ['Audio'],
       brand: ['Apple', 'Sony'],
+      price: '100:500', // widget's native `min:max` token
       sort: 'price_asc', // short token, not the raw replica index name
       page: 3,
     });
@@ -61,12 +63,39 @@ describe('plp routing / stateMapping', () => {
         query: 'camera',
         hierarchicalMenu: { 'hierarchicalCategories.lvl0': ['Cameras'] },
         refinementList: { brand: ['Canon'] },
+        range: { price: '250:750' },
         sortBy: `${INDEX}_price_desc`,
         page: 2,
       },
     };
 
     expect(routeToState(stateToRoute(uiState))).toEqual(uiState);
+  });
+
+  it('round-trips an open-ended price range (only a min, or only a max)', () => {
+    for (const price of ['100:', ':500']) {
+      const uiState = { [INDEX]: { range: { price } } };
+      expect(routeToState(stateToRoute(uiState))).toEqual(uiState);
+    }
+  });
+
+  it('omits an empty (unbounded) price range from the URL', () => {
+    // Both bounds cleared → InstantSearch emits ":"; that is not a filter, so it
+    // must not leak into the URL (a pristine PLP stays empty).
+    expect(stateToRoute({ [INDEX]: { range: { price: ':' } } })).toEqual({});
+  });
+
+  it('restores a price range from a shared link', () => {
+    const ui = routeToState({ price: '100:500' });
+    expect(ui[INDEX].range).toEqual({ price: '100:500' });
+  });
+
+  it('drops a garbled price token from a hand-edited link', () => {
+    // Only a `min:max` shape reaches the refinement; anything else (no colon,
+    // extra colons, non-numeric) would become NaN bounds, so ignore it.
+    for (const price of ['abc', '1:2:3', ':', 'NaN:10', '10-20']) {
+      expect(routeToState({ price })[INDEX].range).toBeUndefined();
+    }
   });
 
   it('restores a shared link and coerces the string page from the URL', () => {

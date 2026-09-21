@@ -30,6 +30,8 @@ export const PLP_INDEX_NAME = algoliaConfig.indexName;
 /** Top level of `hierarchicalCategories` — the primary browse facet (CONTEXT.md). */
 const CATEGORY_ATTRIBUTE = 'hierarchicalCategories.lvl0';
 const BRAND_ATTRIBUTE = 'brand';
+/** Numeric attribute the price-range filter refines (CONTEXT.md: price Facet). */
+const PRICE_ATTRIBUTE = 'price';
 
 export type SortItem = { value: string; label: string };
 
@@ -60,9 +62,22 @@ export type PlpRouteState = {
   q?: string;
   category?: string[];
   brand?: string[];
+  /** Price range as the widget's native `min:max` token, e.g. `100:500`,
+   *  `100:` (min only), `:500` (max only). Absent when unbounded. */
+  price?: string;
   sort?: string;
   page?: number;
 };
+
+/**
+ * A price token is `min:max`, either side optionally empty (`100:`, `:500`),
+ * each a plain number. Reject anything else from a hand-edited/garbled link
+ * (`abc`, `1:2:3`) so it doesn't reach the range refinement as NaN bounds. `:`
+ * alone (no numbers) is not a filter either.
+ */
+function isPriceToken(value: string): boolean {
+  return /^\d*\.?\d*:\d*\.?\d*$/.test(value) && /\d/.test(value);
+}
 
 /** A refinement value may arrive as a bare string (`?brand=x`) — normalize it. */
 function toArray(value: string[] | string | undefined): string[] | undefined {
@@ -82,6 +97,11 @@ function stateToRoute(uiState: UiState): PlpRouteState {
 
   const brand = state.refinementList?.[BRAND_ATTRIBUTE];
   if (brand?.length) route.brand = brand;
+
+  // A bare `:` (both bounds cleared) is not a real filter — omit it so a
+  // pristine PLP keeps an empty URL.
+  const price = state.range?.[PRICE_ATTRIBUTE];
+  if (price && price !== ':') route.price = price;
 
   if (state.sortBy && SORT_VALUE_TO_TOKEN[state.sortBy]) {
     route.sort = SORT_VALUE_TO_TOKEN[state.sortBy];
@@ -105,6 +125,10 @@ function routeToState(routeState: PlpRouteState): UiState {
   const brand = toArray(routeState.brand);
   if (brand) {
     indexUiState.refinementList = { [BRAND_ATTRIBUTE]: brand };
+  }
+
+  if (routeState.price && isPriceToken(routeState.price)) {
+    indexUiState.range = { [PRICE_ATTRIBUTE]: routeState.price };
   }
 
   if (routeState.sort && SORT_TOKEN_TO_VALUE[routeState.sort]) {
