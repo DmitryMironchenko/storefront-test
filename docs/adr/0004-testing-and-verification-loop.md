@@ -66,5 +66,5 @@ signal to iterate.
 ## Risks
 
 - Playwright drives a real browser against `next dev`/`next start`, so it is
-  framework-fork-agnostic; the residual risk is the same SSR/hydration spike the
+  framework-version-agnostic; the residual risk is the same SSR/hydration spike the
   other ADRs already gate on.
