@@ -26,10 +26,11 @@ Constraints specific to this project:
 
 - The task requires *shareable filtered links* (all three deliver). It does
   **not** require SSR or SEO.
-- This repo runs a **forked Next 16** that explicitly warns its APIs and
-  conventions differ from upstream (`AGENTS.md`). Option B's dependency binds to
-  the exact surface — App-Router routing/streaming — a fork is most likely to
-  have changed.
+- This repo runs **upstream Next 16.3.4**, newer than most published docs; its
+  generated `AGENTS.md` warns agents their training data may be stale (the file
+  is written by `next dev`, not evidence of a fork). Option B's dependency binds
+  to the exact surface — App-Router routing/streaming — that changes most between
+  Next releases.
 - The Algolia key is a **search-only, public-by-design** key. Hybrid SSR does
   **not** hide it: after hydration the browser queries Algolia directly in both
   A and B. Only C keeps the key off the client.
@@ -48,7 +49,7 @@ with A as the fallback.**
   to avoid crawl-budget waste and duplicate content. SSR gives the *option*; the
   canonical/noindex strategy that makes it correct is **deferred** for this task.
 - **Spike gate:** before building the PLP on B, mount `<InstantSearchNext>` on
-  this forked Next and confirm it server-renders and hydrates cleanly. If it
+  this Next 16 build and confirm it server-renders and hydrates cleanly. If it
   does not, **fall back to A (client-only)** — not C. A delivers every stated
   requirement; only the first-paint flash returns.
 - **Key stays client-side** (search-only public key). C (RSC proxy) is rejected
@@ -59,7 +60,7 @@ with A as the fallback.**
 ## Spike outcome (2026-09-16)
 
 `<InstantSearchNext>` (`react-instantsearch-nextjs@1.4.9`) was mounted with a
-`<SearchBox>` + `<Hits>` on the forked **Next 16.3.4** (Turbopack). Verified on
+`<SearchBox>` + `<Hits>` on **Next 16.3.4** (Turbopack). Verified on
 both `next dev` and `next build && next start`:
 
 - The first Algolia query is **server-rendered** — the initial HTML contains
@@ -80,8 +81,9 @@ client-side as-is.
 
 - On success, shared filtered links open with correct results already in the
   HTML — no flash — and the PLP is crawlable if we later add canonical rules.
-- We take a real dependency-on-a-fork risk, contained by the spike gate: the
-  fallback to A is small (swap `<InstantSearchNext>` for `<InstantSearch>`; the
+- We take a real risk that this dependency breaks on the newer Next, contained
+  by the spike gate: the fallback to A is small (swap `<InstantSearchNext>` for
+  `<InstantSearch>`; the
   widgets and routing config are otherwise the same).
 - A future reader sees why the PLP is a client-hydrated subtree rather than a
   pure RSC page, and why the search key is (correctly) in the client bundle.

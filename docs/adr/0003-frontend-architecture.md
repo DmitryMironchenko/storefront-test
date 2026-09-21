@@ -16,7 +16,8 @@ that shaped this:
 - Accessibility (screen-reader support) is a **graded requirement**. The riskiest
   a11y surfaces are interactive overlays (basket drawer/modal, toasts) where
   hand-rolled focus management commonly fails.
-- The repo runs a **forked Next 16** that warns its APIs differ from upstream.
+- The repo runs **upstream Next 16.3.4** (newer than most published docs); its
+  generated `AGENTS.md` warns agents their training data may be stale.
 - Current styling is Tailwind 4 (CSS-first `@theme`); no component library is
   installed; `DESIGN.md` is not wired into the code.
 
@@ -90,7 +91,7 @@ on the drawer.
 ## Risks
 
 - **Spike stack:** HeroUI and `<InstantSearchNext>` (ADR 0002) both do
-  SSR/hydration on the forked Next 16. A single combined smoke-test page had to
+  SSR/hydration on this newer Next 16. A single combined smoke-test page had to
   confirm both server-render and hydrate cleanly before building. Fallbacks if
   either failed: Radix primitives for overlays (HeroUI); client-only
   InstantSearch (ADR 0002).
